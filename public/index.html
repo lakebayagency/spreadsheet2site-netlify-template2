@@ -1,0 +1,443 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monsters of the World</title>
+<meta name="description" content="Let the monsters rule! Run and hide, human!">
+<link rel="stylesheet"
+	href="bulma.min.css">
+
+	
+
+	<style th:inline="css">
+		#map {
+		 height: 400px;
+		 width: 100%;
+		}
+ 
+		 #infoContent {
+			 max-width: 300px;
+		 }
+ 
+		 #infoContent img {
+			 max-width: 150px;
+		 }
+ 
+	 </style>
+</head>
+<body>
+	<section id="hero" class="hero is-medium ">
+
+		<div class="hero-body">
+			<div class="container">
+                <div class="columns is-centered is-vcentered">
+
+                    <div class="column is-7">
+			<h1 class="title is-1">Monsters of the World</h1>
+            <h2 class="subtitle is-3">Let the monsters rule! Run and hide, human!</h2>
+        </div>
+        </div>
+				<div class="columns is-centered">
+
+					<div class="column is-7">
+                        
+                        
+							<div class="buttons has-addons">
+                                
+							</div>
+                        
+                    </div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	
+
+	<section class="section">
+		<div class="container">
+			<div class="columns">
+				<div class="column">
+					<div id="map"></div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<script>
+
+      function initMap() {
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+
+        zoom: 4
+        });
+
+		var data = [{"Description":"","Id":"item-1","Image":"https://d30y9cdsu7xlg0.cloudfront.net/png/824399-200.png","Lat":"50.1157873","Lng":"8.702216","Location":"Zoo Frankfurt, Germany","Name":"Monster","ShortDescription":"cute monster"},{"Description":"","Id":"item-2","Image":"https://d30y9cdsu7xlg0.cloudfront.net/png/1415240-200.png","Lat":"35.7089183","Lng":"139.7742183","Location":"Ueno,Tokyo, Japan","Name":"Another Monster","ShortDescription":"Boooo"},{"Description":"","Id":"item-3","Image":"https://d30y9cdsu7xlg0.cloudfront.net/png/662781-200.png","Lat":"45.7331296","Lng":"23.8786843","Location":"Siebenbürgen, Rumänien","Name":"Vlad","ShortDescription":"rulez"},{"Description":"","Id":"item-4","Image":"https://d30y9cdsu7xlg0.cloudfront.net/png/1390105-200.png","Lat":"51.5123443","Lng":"-0.0909852","Location":"City of London","Name":"Werewolf","ShortDescription":"A werewolf is a human with the ability to shapeshift into a wolf "},{"Description":"","Id":"item-5","Image":"https://d30y9cdsu7xlg0.cloudfront.net/png/768091-200.png","Lat":"47.1012282","Lng":"-119.9956017","Location":"Gorge Amphitheatre","Name":"Sasquatch","ShortDescription":"Bigfoot or Sasquatch is a hairy, upright-walking, ape-like being who reportedly dwells in the wilderness and leaves behind large footprints."},{"Description":"","Id":"item-6","Image":"https://d30y9cdsu7xlg0.cloudfront.net/png/162671-200.png","Lat":"29.7167868","Lng":"-95.5007958","Location":"Himalaya","Name":"Yeti","ShortDescription":"The Yeti is an ape-like entity, taller than an average human, that is said to inhabit the Himalayan region of Nepal, Bhutan, and Tibet."}];
+
+		var bounds  = new google.maps.LatLngBounds();
+
+		var infowindow = new google.maps.InfoWindow();
+
+		for(var i=0; i< data.length;i++) {
+
+			if(data[i].Lat !== null && data[i].Lat !== "") {
+
+				var marker = new google.maps.Marker({
+				  position: {lat: parseFloat(data[i].Lat), lng: parseFloat(data[i].Lng)},
+				  map: map,
+				  title: data[i].Name
+				});
+
+				var infoContent = '<div id="infoContent">'+
+				'<h1 id="firstHeading" class="firstHeading">' + data[i].Name + '</h1>'+
+				'<p><img src="' + data[i].Image + '"><br>' + data[i].ShortDescription + '</p>'+
+				'</div>';
+
+
+				google.maps.event.addListener(marker,'click', (function(marker,content){
+					return function() {
+						infowindow.setContent(content);
+						infowindow.open(map,marker);
+					};
+				})(marker,infoContent));
+
+				var loc = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
+				bounds.extend(loc);
+			}
+		 }
+
+		map.fitBounds(bounds);
+		map.panToBounds(bounds);
+
+      }
+
+    </script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAZ-Qf2BpFGPH56n_T811NQ3XON7QUfCM&callback=initMap">
+	</script>
+    
+
+
+    
+<section class="section is-medium mb-0 pb-0">
+    <div class="container">
+        <div class="columns is-multiline mb-6">
+    
+    <div class="column is-one-quarter ss2s-item">
+        <div class="card">
+            
+            <div class="card-image">
+                <figure class="image">
+                    
+                        
+                            <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/824399-200.png" alt="Monster">
+                        
+                    
+                </figure>
+            </div>
+            
+            <div class="card-content">
+                
+                    <h2 class="title is-4" >Monster</h2>
+                
+                
+                <div class="content" >
+                    <p>
+                        cute monster
+                    </p>
+                    <div class="tags">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+   
+    <div class="column is-one-quarter ss2s-item">
+        <div class="card">
+            
+            <div class="card-image">
+                <figure class="image">
+                    
+                        
+                            <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/1415240-200.png" alt="Another Monster">
+                        
+                    
+                </figure>
+            </div>
+            
+            <div class="card-content">
+                
+                    <h2 class="title is-4" >Another Monster</h2>
+                
+                
+                <div class="content" >
+                    <p>
+                        Boooo
+                    </p>
+                    <div class="tags">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+   
+    <div class="column is-one-quarter ss2s-item">
+        <div class="card">
+            
+            <div class="card-image">
+                <figure class="image">
+                    
+                        
+                            <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/662781-200.png" alt="Vlad">
+                        
+                    
+                </figure>
+            </div>
+            
+            <div class="card-content">
+                
+                    <h2 class="title is-4" >Vlad</h2>
+                
+                
+                <div class="content" >
+                    <p>
+                        rulez
+                    </p>
+                    <div class="tags">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+   
+    <div class="column is-one-quarter ss2s-item">
+        <div class="card">
+            
+            <div class="card-image">
+                <figure class="image">
+                    
+                        
+                            <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/1390105-200.png" alt="Werewolf">
+                        
+                    
+                </figure>
+            </div>
+            
+            <div class="card-content">
+                
+                    <h2 class="title is-4" >Werewolf</h2>
+                
+                
+                <div class="content" >
+                    <p>
+                        A werewolf is a human with the ability to shapeshift into a wolf 
+                    </p>
+                    <div class="tags">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+   
+    <div class="column is-one-quarter ss2s-item">
+        <div class="card">
+            
+            <div class="card-image">
+                <figure class="image">
+                    
+                        
+                            <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/768091-200.png" alt="Sasquatch">
+                        
+                    
+                </figure>
+            </div>
+            
+            <div class="card-content">
+                
+                    <h2 class="title is-4" >Sasquatch</h2>
+                
+                
+                <div class="content" >
+                    <p>
+                        Bigfoot or Sasquatch is a hairy, upright-walking, ape-like being who reportedly dwells in the wilderness and leaves behind large footprints.
+                    </p>
+                    <div class="tags">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+   
+    <div class="column is-one-quarter ss2s-item">
+        <div class="card">
+            
+            <div class="card-image">
+                <figure class="image">
+                    
+                        
+                            <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/162671-200.png" alt="Yeti">
+                        
+                    
+                </figure>
+            </div>
+            
+            <div class="card-content">
+                
+                    <h2 class="title is-4" >Yeti</h2>
+                
+                
+                <div class="content" >
+                    <p>
+                        The Yeti is an ape-like entity, taller than an average human, that is said to inhabit the Himalayan region of Nepal, Bhutan, and Tibet.
+                    </p>
+                    <div class="tags">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+   
+        </div>
+   
+    </div>
+</section>
+
+
+
+	<footer class="footer">
+		<div class="container">
+
+
+			<div class="columns is-centered">
+				<div class="column">
+					<div class="content has-text-left">
+                        
+                        
+						<p>
+                            Demo page for Spreadsheet2site
+                        </p>
+                        
+
+						
+						<p>Page built with <a href="https://spreadsheet2site.com/">Spreadsheet2Site</a> trial version</p>
+						
+					</div>
+				</div>
+				<div class="column is-3 content has-text-right">
+                    
+                        
+                            Legalese (German)<br>
+                        
+                    
+                        
+                            <a href="http://spreadsheet2site.com/impressum/">Impressum</a><br>
+                        
+                    
+                        
+                            <a href="http://spreadsheet2site.com/datenschutz/">Datenschutz</a><br>
+                        
+                    
+					
+				</div>
+			</div>
+		</div>
+	</footer>
+
+    
+
+	<script>
+		function hasTags(elem, tagNames) {
+			var tags = elem.getElementsByClassName("tag");
+			var hits = 0;
+			for(var i=0;i< tags.length;i++) {
+			 	if (tagNames.includes(tags[i].textContent)) {
+			 		hits++;
+			 	}
+			}
+			return hits === tagNames.length;
+		}
+
+		function getActiveFilters() {
+			var activeFilters =[];
+			var filterButtons = document.getElementsByClassName("filter");
+			for( var i=0; i< filterButtons.length; i++){
+				if (filterButtons[i].className.indexOf("is-info") > -1) {
+					activeFilters.push(filterButtons[i].textContent);
+				}
+			}
+
+			return activeFilters;
+		}
+
+		function toggleCategories(filterClass, tag) {
+			var isOn = false
+			if (tag.className.indexOf("is-info") > -1) {
+				tag.classList.remove("is-info");
+			} else {
+				var filterButtons = document.getElementsByClassName("filter-" + filterClass);
+				for( var i=0; i< filterButtons.length; i++){
+					filterButtons[i].classList.remove("is-info");
+				}
+				tag.classList.add("is-info");
+				isOn = true;
+
+
+			}
+
+			var activeFilters = getActiveFilters();
+			var cards = document.getElementsByClassName("ss2s-item");
+			for( var i=0; i< cards.length; i++){
+				var hasTags = this.hasTags(cards[i], activeFilters);
+
+				if (hasTags) {
+					cards[i].style.display = "";
+				} else {
+					cards[i].style.display = "none";
+				}
+			}
+		}
+
+
+
+	</script>
+
+	
+
+
+	    <script type="text/javascript">
+        var _paq = _paq || [];
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+            var u = "//spreadsheet2site.com/stats/";
+            _paq.push(['setTrackerUrl', u + 'piwik.php']);
+            _paq.push(['setSiteId', '13']);
+          var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+          g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+        })();
+      </script>
+      <noscript><p><img src="//spreadsheet2site.com/stats/piwik.php?idsite=13" style="border:0;" alt="" /></p></noscript>
+
+	
+</body>
+</html>

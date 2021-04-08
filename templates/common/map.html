@@ -1,0 +1,64 @@
+{{define "map"}}
+{{ if .Meta.MapsApiKey}}
+	<section class="section">
+		<div class="container">
+			<div class="columns">
+				<div class="column">
+					<div id="map"></div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<script>
+
+      function initMap() {
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+
+        zoom: 4
+        });
+
+		var data = {{ .Items }};
+
+		var bounds  = new google.maps.LatLngBounds();
+
+		var infowindow = new google.maps.InfoWindow();
+
+		for(var i=0; i< data.length;i++) {
+
+			if(data[i].Lat !== null && data[i].Lat !== "") {
+
+				var marker = new google.maps.Marker({
+				  position: {lat: parseFloat(data[i].Lat), lng: parseFloat(data[i].Lng)},
+				  map: map,
+				  title: data[i].Name
+				});
+
+				var infoContent = '<div id="infoContent">'+
+				'<h1 id="firstHeading" class="firstHeading">' + data[i].Name + '</h1>'+
+				'<p><img src="' + data[i].Image + '"><br>' + data[i].ShortDescription + '</p>'+
+				'</div>';
+
+
+				google.maps.event.addListener(marker,'click', (function(marker,content){
+					return function() {
+						infowindow.setContent(content);
+						infowindow.open(map,marker);
+					};
+				})(marker,infoContent));
+
+				var loc = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
+				bounds.extend(loc);
+			}
+		 }
+
+		map.fitBounds(bounds);
+		map.panToBounds(bounds);
+
+      }
+
+    </script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key={{.Meta.MapsApiKey}}&callback=initMap">
+	</script>
+    {{ end }}
+{{ end }}

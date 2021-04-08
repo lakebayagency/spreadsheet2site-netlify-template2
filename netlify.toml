@@ -1,0 +1,18 @@
+[build]
+    command = "./bin/spreadsheet2site-linux build -template templates/"
+    #command = "./bin/spreadsheet2site-osx build -template templates/"
+    publish = "public"
+
+[dev]
+    framework= "#custom"
+    command="./bin/spreadsheet2site-osx dev -template templates/"
+    #command="./bin/spreadsheet2site-linux dev -template templates/"
+    #command="./bin/spreadsheet2site.exe dev -template templates/"
+    targetPort=8080
+
+[template]
+    incoming-hooks = ["UpdateSite"]
+
+[template.environment]
+    SHEET_ID="ID of your Google Sheets"
+    SS2S_LICENSE="Your license key"

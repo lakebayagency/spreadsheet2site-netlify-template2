@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ .Name }}</title>
+    <meta name="description" content="{{ .Description }}">
+    <link href="tailwind.min.css" rel="stylesheet">
+
+    <style>       
+        #menu-toggle:checked + #menu {
+            display: block;
+        }
+        
+        .hover\:grow {
+            transition: all 0.3s;
+            transform: scale(1);
+        }
+        
+        .hover\:grow:hover {
+            transform: scale(1.02);
+        }
+        
+        .carousel-open:checked + .carousel-item {
+            position: static;
+            opacity: 100;
+        }
+        
+        .carousel-item {
+            -webkit-transition: opacity 0.6s ease-out;
+            transition: opacity 0.6s ease-out;
+        }
+        
+        #carousel-1:checked ~ .control-1,
+        #carousel-2:checked ~ .control-2,
+        #carousel-3:checked ~ .control-3 {
+            display: block;
+        }
+        
+        .carousel-indicators {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            bottom: 2%;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 10;
+        }
+        
+        #carousel-1:checked ~ .control-1 ~ .carousel-indicators li:nth-child(1) .carousel-bullet,
+        #carousel-2:checked ~ .control-2 ~ .carousel-indicators li:nth-child(2) .carousel-bullet,
+        #carousel-3:checked ~ .control-3 ~ .carousel-indicators li:nth-child(3) .carousel-bullet {
+            color: #000;
+            /*Set to match the Tailwind colour you want the active one to be */
+        }
+
+        #about p, .description p, .description ul, #faq p {
+            margin-bottom: 1.5rem;
+        }
+        .description ul {
+            list-style: disc;
+            list-style-position: inside;
+        }
+
+        .modal-container {
+            max-height: 90vh;
+        }
+
+        h3 {
+            font-weight: bold;
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+            --tw-text-opacity: 1;
+            color: rgba(31, 41, 55, var(--tw-text-opacity));
+        }
+    </style>
+
+</head>
+
+<body class="bg-white text-gray-600 work-sans leading-normal text-base tracking-normal ">
+
+    <!--Nav-->
+    <nav id="header" class="w-full z-30 top-0 py-1">
+        <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-6 py-3">
+
+            <label for="menu-toggle" class="cursor-pointer md:hidden block">
+                <svg class="fill-current text-gray-900" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                    <title>menu</title>
+                    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+                </svg>
+            </label>
+            <input class="hidden" type="checkbox" id="menu-toggle" />
+
+            <div class="flex w-full justify-center">
+                <a class="flex items-center tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl " href=".">
+                    {{ .Name }}
+                </a>
+            </div>
+
+
+        </div>
+    </nav>
+
+<section class="w-full mx-auto bg-nordic-gray-light flex pt-12 md:pt-0 md:items-center bg-cover bg-right" style="max-width:1600px; height: 32rem; background-image: url('media/{{ .Meta.HeroImage}}');">
+
+	<div class="container mx-auto">
+
+		<div class="flex flex-col w-full lg:w-1/2 justify-center items-start  px-6 tracking-wide">
+			<h1 class="text-white text-2xl lg:text-5xl my-4">{{ .Meta.Slogan | safeHTML }}</h1>
+			<a class="text-xl inline-block no-underline border-b border-gray-600 leading-relaxed text-white hover:text-gray-400 hover:border-black" href="#store">products</a>
+
+		</div>
+
+	  </div>
+
+</section>
+
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-16 mx-auto">
+      <div class="flex flex-col text-center w-full mb-12">
+        <h2 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">{{ .Meta.CtaTitle | safeHTML }}</h2>
+        <p class="lg:w-2/3 mx-auto leading-relaxed text-base">{{ .Meta.CtaText }}</p>
+      </div>
+      <div class="flex w-full justify-center">
+        <a class="paddle_button text-white bg-yellow-500 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg"
+        {{ if .Meta.PaddleUpsell}} data-theme="none" data-product="{{.Meta.PaddleUpsell}}" href="https://buy.paddle.com/product/{{.Meta.PaddleUpsell}}"
+        {{else}} href="{{ .Meta.CtaLink }}"
+        {{end}}>{{ .Meta.CtaButton }}</a>
+      </div>
+    </div>
+  </section>
+    <section class="bg-white py-8">
+
+        <div class="container mx-auto flex items-center flex-wrap pt-4 pb-12">
+            <nav id="store" class="w-full top-0 px-6 py-1">
+                <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
+
+                    <a class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl " href="#">
+				Products
+			</a>
+
+
+              </div>
+            </nav>
+
+            {{range .Items}}
+            <div class="w-full sm:w-1/2 md:w-1/3 xl:w-1/4 p-6 flex flex-col">
+                <a onclick="toggleModal('{{ .Id }}')" class="cursor-pointer">
+                    {{ if startsWith .Image "http"}}
+                    <img class="hover:grow hover:shadow-lg" src="{{ .Image}}">
+                    {{ else }}
+                    <img class="hover:grow hover:shadow-lg" src="media/{{ .Image}}">
+                    {{ end }}
+                    <div class="pt-3 flex items-center justify-between">
+                        <p class="">{{ .Name}}</p>
+                        <p>{{ .Price}}</p>
+
+                    </div>
+                    <p class="pt-1 text-gray-400">{{ .Teaser}}</p>
+                    <p class="mt-3 flex w-full justify-center items-center">
+                        <a onclick="toggleModal('{{ .Id }}')" class="cursor-pointer mr-6">{{ $.Meta.ViewButton }}</a>
+                        <a class="paddle_button cursor-pointer inline-flex bg-gray-800 text-white border-0 py-2 px-6 focus:outline-none hover:bg-gray-600"
+                        {{ if .PaddleId}}
+                            {{ if $.Meta.PaddleUpsell}}data-upsell="{{ $.Meta.PaddleUpsell}}"{{end}}
+                            {{ if $.Meta.PaddleUpsellText}}data-upsell-text="{{ $.Meta.PaddleUpsellText}}"{{end}}
+                            {{ if $.Meta.PaddleUpsellTitle}}data-upsell-title="{{ $.Meta.PaddleUpsellTitle}}"{{end}}
+                             data-theme="none" data-product="{{.PaddleId}}" href="https://buy.paddle.com/product/{{.PaddleId}}"
+                        {{else}} href="{{.Link}}"
+                        {{end}}>{{ $.Meta.BuyButton }}</a>
+                    </p>
+                </a>
+            </div>
+            {{end}}
+            
+
+            </div>
+
+    </section>
+
+    {{range .Items}}
+    <div id="modal-{{ .Id }}" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center">
+        <div onclick="toggleModal('{{ .Id }}')" class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+        
+        <div class="modal-container bg-white w-8/12 mx-auto rounded shadow-lg z-50 overflow-y-auto">
+          
+          <div onclick="toggleModal('{{ .Id }}')" class="modal-close absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50">
+            <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+              <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+            </svg>
+            <span class="text-sm">(Esc)</span>
+          </div>
+    
+          <!-- Add margin if you want to see some of the overlay behind the modal-->
+          <div class="modal-content py-4 text-left px-6">
+            <!--Title-->
+            <div class="flex justify-between items-center pb-3">
+              <p class="text-2xl font-bold">{{ .Name}}</p>
+              <div onclick="toggleModal('{{ .Id }}')" class="modal-close cursor-pointer z-50">
+                <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                  <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                </svg>
+              </div>
+            </div>
+    
+            <div class="description">
+                {{ .Description | safeHTML}}
+            </div>
+            <!--Footer-->
+            <div class="flex justify-end pt-5">
+              <a class="bg-gray-800 text-white border-0 py-2 px-6 focus:outline-none hover:bg-gray-600"
+              {{ if .PaddleId}}
+                {{ if $.Meta.PaddleUpsell}}data-upsell="{{ $.Meta.PaddleUpsell}}"{{end}}
+                {{ if $.Meta.PaddleUpsellText}}data-upsell-text="{{ $.Meta.PaddleUpsellText}}"{{end}}
+                {{ if $.Meta.PaddleUpsellTitle}}data-upsell-title="{{ $.Meta.PaddleUpsellTitle}}"{{end}}
+                data-theme="none" data-product="{{.PaddleId}}" href="https://buy.paddle.com/product/{{.PaddleId}}"
+              {{else}} href="{{.Link}}"
+              {{end}}>{{ $.Meta.BuyButton }}</a>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      {{end}}
+
+    <section class="bg-white py-8">
+
+        <div class="container py-8 px-6 mx-auto">
+
+            <h2 class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl mb-8" href="#">
+			About
+            </h2>
+
+        <div id="about" class="mt-8 mb-8">
+            {{ .Meta.About | safeHTML}}
+        </div>
+        </div>
+
+    </section>
+    <section class="bg-white py-8">
+
+        <div class="container py-8 px-6 mx-auto">
+
+            <h2 class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl mb-8" href="#">
+                Frequently Asked Questions
+            </h2>
+
+        <div id="faq" class="mt-8 mb-8">
+            {{ .Meta.Faq | safeHTML}}
+        </div>
+        </div>
+
+    </section>
+    <footer class="container mx-auto bg-white py-8 border-t border-gray-400">
+        <div class="container flex px-3 py-8 ">
+            <div class="w-full mx-auto flex flex-wrap">
+                <div class="flex w-full lg:w-1/2 ">
+                    <div class="px-3 md:px-0">
+                        <h3 class="font-bold text-gray-900">About</h3>
+                        <p class="py-4">
+                            {{ .Meta.AboutFooter}}
+                        </p>
+						{{ if not .IsLicenseValid}}
+						<p>Page built with <a href="https://spreadsheet2site.com/">Spreadsheet2Site</a> trial version</p>
+						{{ end }}
+                    </div>
+                </div>
+                <div class="flex w-full lg:w-1/2 lg:justify-end lg:text-right">
+                    <div class="px-3 md:px-0">
+                        <h3 class="font-bold text-gray-900">Links</h3>
+                        <ul class="list-reset items-center pt-3">
+                            {{ range .NavItems }}
+                            <li><a class="inline-block no-underline hover:text-black hover:underline py-1" href="{{ .URL}}">{{ .Name }}</a></li>
+                            {{ end }}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>       
+       
+        document.onkeydown = function(evt) {
+          evt = evt || window.event
+          var isEscape = false
+          if ("key" in evt) {
+            isEscape = (evt.key === "Escape" || evt.key === "Esc")
+          } else {
+            isEscape = (evt.keyCode === 27)
+          }
+          if (isEscape && document.body.classList.contains('modal-active')) {
+            toggleModal()
+          }
+        };
+        
+        
+        function toggleModal (id) {
+          const body = document.querySelector('body')
+          const modal = document.getElementById("modal-" + id)
+          modal.classList.toggle('opacity-0')
+          modal.classList.toggle('pointer-events-none')
+          body.classList.toggle('modal-active')
+        }
+        
+         
+      </script>
+
+{{ if .Meta.PaddleVendor }}
+<script src="https://cdn.paddle.com/paddle/paddle.js"></script>
+<script type="text/javascript">
+    Paddle.Setup({ vendor: {{ .Meta.PaddleVendor | asInt}} });
+</script>
+{{ end }}
+
+{{ .Meta.BodyScripts | safeHTML }}
+</body>
+
+</html>

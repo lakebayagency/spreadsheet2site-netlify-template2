@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ .Name }}</title>
+<meta name="description" content="{{ .Description }}">
+<link rel="stylesheet"
+	href="bulma.min.css">
+
+	{{ if .Meta.CustomCss }}
+        {{ .Meta.CustomCss | safeHTML }}
+    {{ end }}
+
+	<style th:inline="css">
+		#map {
+		 height: 400px;
+		 width: 100%;
+		}
+ 
+		 #infoContent {
+			 max-width: 300px;
+		 }
+ 
+		 #infoContent img {
+			 max-width: 150px;
+		 }
+ 
+	 </style>
+</head>
+<body>
+	<section id="hero" class="hero is-medium {{ .Meta.HeroClass}}">
+
+		<div class="hero-body">
+			<div class="container">
+                <div class="columns is-centered is-vcentered">
+
+                    <div class="column is-7">
+			<h1 class="title is-1">{{ .Name }}</h1>
+            <h2 class="subtitle is-3">{{ .Meta.Slogan }}</h2>
+        </div>
+        </div>
+				<div class="columns is-centered">
+
+					<div class="column is-7">
+                        {{ range $key := .FilterKeys }}
+                        
+							<div class="buttons has-addons">
+                                {{ range $value := (index $.ItemFilters $key) }}
+                                <button class="button filter filter-{{ $key}}" onclick="toggleCategories('{{ $key}}', this)">{{ $value }}</button>
+                                {{ end }}
+							</div>
+                        {{ end }}
+                    </div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	{{template "map" .}}
+
+    {{template "itemsLayout" .}}
+
+	<footer class="footer">
+		<div class="container">
+
+
+			<div class="columns is-centered">
+				<div class="column">
+					<div class="content has-text-left">
+                        
+                        {{ if .Meta.AboutFooter }}
+						<p>
+                            {{ .Meta.AboutFooter  | safeHTML }}
+                        </p>
+                        {{ end }}
+
+						{{ if not .IsLicenseValid}}
+						<p>Page built with <a href="https://spreadsheet2site.com/">Spreadsheet2Site</a> trial version</p>
+						{{ end }}
+					</div>
+				</div>
+				<div class="column is-3 content has-text-right">
+                    {{ range .NavItems }}
+                        {{ if .URL }}
+                            <a href="{{ .URL}}">{{ .Name}}</a><br>
+                        {{ else }}
+                            {{ .Name}}<br>
+                        {{ end }}
+                    {{ end }}
+					
+				</div>
+			</div>
+		</div>
+	</footer>
+
+    {{template "filterscript" . }}
+	
+
+{{ if .Meta.BodyScripts }}
+	{{ .Meta.BodyScripts | safeHTML }}
+{{ end }}
+	
+</body>
+</html>

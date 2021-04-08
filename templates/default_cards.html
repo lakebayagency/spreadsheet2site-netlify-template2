@@ -1,0 +1,65 @@
+{{define "itemsLayout"}}
+<section class="section is-medium mb-0 pb-0">
+    <div class="container">
+        <div class="columns is-multiline mb-6">
+    {{range .Items}}
+    <div class="column is-one-quarter ss2s-item">
+        <div class="card">
+            {{ if .Image }}
+            <div class="card-image">
+                <figure class="image">
+                    {{ if .Link}}
+                        <a href="{{ .Link }}" target="_blank">
+                            {{ if startsWith .Image "http"}}
+                                <img src="{{ .Image}}" alt="{{ .Name }}">
+                            {{ else }}
+                                <img src="media/{{ .Image}}" alt="{{ .Name }}">
+                            {{ end }}
+                        </a>
+
+                    {{ else }}
+                        {{ if startsWith .Image "http"}}
+                            <img src="{{ .Image}}" alt="{{ .Name }}">
+                        {{ else }}
+                            <img src="media/{{ .Image}}" alt="{{ .Name }}">
+                        {{ end }}
+                    {{ end }}
+                </figure>
+            </div>
+            {{ end }}
+            <div class="card-content">
+                {{ if .Link}}
+                    <h2 class="title is-4" >
+                        <a href="{{ .Link}}" target="_blank">{{ .Name }}</a>
+                    </h2>
+                {{ else }}
+                    <h2 class="title is-4" >{{ .Name }}</h2>
+                {{ end }}
+                
+                <div class="content" >
+                    <p>
+                        {{  .ShortDescription}}
+                    </p>
+                    <div class="tags">
+                        {{range .Categories }}
+                        <span class="tag">{{.}}</span>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+   {{ end }}
+        </div>
+   {{ if .Meta.CtaLink }}
+        <div class="mt-6 mb-6 has-text-centered">
+            <p><a class="mt-6 button is-large" href="{{ .Meta.CtaLink }}">{{ .Meta.CtaButton }}</a></p>
+        </div>
+   {{ end }}
+    </div>
+</section>
+
+{{end}}
+{{template "default_base.html" .}}

@@ -1,0 +1,58 @@
+{{define "filterscript"}}
+
+	<script>
+		function hasTags(elem, tagNames) {
+			var tags = elem.getElementsByClassName("tag");
+			var hits = 0;
+			for(var i=0;i< tags.length;i++) {
+			 	if (tagNames.includes(tags[i].textContent)) {
+			 		hits++;
+			 	}
+			}
+			return hits === tagNames.length;
+		}
+
+		function getActiveFilters() {
+			var activeFilters =[];
+			var filterButtons = document.getElementsByClassName("filter");
+			for( var i=0; i< filterButtons.length; i++){
+				if (filterButtons[i].className.indexOf("is-info") > -1) {
+					activeFilters.push(filterButtons[i].textContent);
+				}
+			}
+
+			return activeFilters;
+		}
+
+		function toggleCategories(filterClass, tag) {
+			var isOn = false
+			if (tag.className.indexOf("is-info") > -1) {
+				tag.classList.remove("is-info");
+			} else {
+				var filterButtons = document.getElementsByClassName("filter-" + filterClass);
+				for( var i=0; i< filterButtons.length; i++){
+					filterButtons[i].classList.remove("is-info");
+				}
+				tag.classList.add("is-info");
+				isOn = true;
+
+
+			}
+
+			var activeFilters = getActiveFilters();
+			var cards = document.getElementsByClassName("ss2s-item");
+			for( var i=0; i< cards.length; i++){
+				var hasTags = this.hasTags(cards[i], activeFilters);
+
+				if (hasTags) {
+					cards[i].style.display = "";
+				} else {
+					cards[i].style.display = "none";
+				}
+			}
+		}
+
+
+
+	</script>
+{{end}}

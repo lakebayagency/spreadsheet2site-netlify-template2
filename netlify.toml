@@ -1,7 +1,7 @@
 [build]
     command = "./bin/spreadsheet2site-linux build -template templates/"
     #command = "./bin/spreadsheet2site-osx build -template templates/"
-    publish = "public"
+    publish = "public/cat-travel-litterbox"
 
 [dev]
     framework= "#custom"
